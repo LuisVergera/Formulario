@@ -2,8 +2,12 @@ import React from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import "./Signup.css";
+import Modal from "./components/Modal";
+import { useModal } from "./hooks/useModal";
+import "./components/Modal.css";
 
 export default function Signup() {
+  const [isOpenModal, openModal, closeModal] = useModal(false);
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -34,12 +38,14 @@ export default function Signup() {
 
   return (
     <form onSubmit={formik.handleSubmit}>
+      <h1>Formulario</h1>
       <div className="input-container">
+        <h3>Nombre</h3>
         <input
           id="name"
           name="name"
           type="text"
-          placeholder="Full Name"
+          placeholder="Nombre completo"
           onChange={formik.handleChange}
           value={formik.values.name}
           onBlur={formik.handleBlur}
@@ -47,11 +53,12 @@ export default function Signup() {
       </div>
       {formik.errors.name ? <p>{formik.errors.name}</p> : null}
       <div className="input-container">
+        <h3>Email</h3>
         <input
           id="email"
           name="email"
           type="email"
-          placeholder="example@email.com"
+          placeholder="ejemplo@email.com"
           onChange={formik.handleChange}
           value={formik.values.email}
           onBlur={formik.handleBlur}
@@ -61,11 +68,12 @@ export default function Signup() {
         <p>{formik.errors.email}</p>
       ) : null}
       <div className="input-container">
+        <h3>Contraseña</h3>
         <input
           id="password"
           name="password"
           type="password"
-          placeholder="password"
+          placeholder="contraseña"
           onChange={formik.handleChange}
           value={formik.values.password}
           onBlur={formik.handleBlur}
@@ -75,6 +83,7 @@ export default function Signup() {
         <p>{formik.errors.password}</p>
       ) : null}
       <div className="input-container">
+        <h3>Texto</h3>
         <input
           id="text"
           name="text"
@@ -85,7 +94,12 @@ export default function Signup() {
           onBlur={formik.handleBlur}
         />
       </div>
-      <button type="submit">Submit</button>
+      <button type="submit" onClick={openModal}>
+        Submit
+      </button>
+      <Modal isOpen={isOpenModal} closeModal={closeModal}>
+        {JSON.stringify([formik.values])}
+      </Modal>
     </form>
   );
 }
